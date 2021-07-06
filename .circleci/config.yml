@@ -16,13 +16,13 @@ jobs:
       - checkout
       # Use mvn clean and package as the standard maven build phase
       - run:
-          name: Build
-          command: mvn dependency:go-offline
-      # Then run your tests!
-      - run:
-          name: Test
-          command: mvn test
+          name: Generate cumulative pom.xml checksum
+          command: |
+            find . -type f -name "pom.xml" -exec sh -c "sha256sum {} >> ~/pom-checksum.tmp" \;
+            sort -o ~/pom-checksum ~/pom-checksum.tmp
+          when: always
 
+      - run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
 workflows:
   # Below is the definition of your workflow.
   # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
