@@ -23,7 +23,10 @@ jobs:
           when: always
 
       - run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
-      - run: mvn package
+      # Then run your tests!
+      - run:
+          name: Test
+          command: mvn test
 workflows:
   # Below is the definition of your workflow.
   # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
